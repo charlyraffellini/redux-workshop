@@ -3,10 +3,11 @@ import TaskList from './TaskList';
 import { Statuses } from "./constants";
 import AddTaskForm from "./AddTaskForm";
 import { connect } from 'react-redux';
+import { createTask } from './actions';
 
 class App extends React.Component {
   render() {
-    let { tasksByStatus } = this.props;
+    let { dispatch, tasksByStatus } = this.props;
 
     let taskLists = tasksByStatus.map( (item, index) =>
       <TaskList key={index}
@@ -16,7 +17,9 @@ class App extends React.Component {
 
     return <div className="kanbanBoard">
       <h1>Redux Kanban Board</h1>
-      <AddTaskForm />
+      <AddTaskForm onAdd={ name =>
+          dispatch(createTask(name))
+      } />
       {taskLists}
     </div>;
   }
