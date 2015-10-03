@@ -10,9 +10,16 @@ import { Provider } from 'react-redux';
 
 let root = document.getElementById('app');
 
+let store =
+  createStore(combineReducers(reducers), {tasks: sampleTasks});
+
 React.render(
-  <div>
-    <App tasks={sampleTasks} />
-    <Help />
-  </div>,
+  <Provider store={store}>
+    { () =>
+      <div>
+        <App tasks={sampleTasks} />
+        <Help />
+      </div>
+    }
+  </Provider>,
   root);

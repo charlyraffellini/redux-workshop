@@ -3,7 +3,7 @@ import TaskList from './TaskList';
 import { Statuses } from "./constants";
 import { connect } from 'react-redux';
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     let tasks = this.props.tasks;
     let baseTaskMap = Object.keys(Statuses).map(status => ({status, tasks:[]}));
@@ -19,6 +19,16 @@ export default class App extends React.Component {
       <h1>Redux Kanban Board</h1>
       {taskLists}
     </div>;
+  }
+}
+
+export default
+  connect(select)(App);
+
+function select(state){
+  console.log(state);
+  return {
+    tasks: state.tasks
   }
 }
 
