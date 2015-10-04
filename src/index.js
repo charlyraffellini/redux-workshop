@@ -4,11 +4,23 @@ import React from 'react';
 import App from './App';
 import Help from './Help';
 import * as reducers from './reducers';
-import { createStore, combineReducers } from 'redux';
+import { compose, createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import { devTools, persistState } from 'redux-devtools';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 
 let root = document.getElementById('app');
-let store = createStore(combineReducers(reducers));
+
+const finalCreateStore = compose(
+  devTools(),
+  persistState(window.location
+    .href.match(
+    /[?&]debug_session=([^&]+)\b/)
+    ),
+  createStore
+);
+
+let store = finalCreateStore(combineReducers(reducers));
 
 React.render(
   <div>
@@ -16,5 +28,9 @@ React.render(
       { () => <App /> }
     </Provider>
     <Help />
+    <DebugPanel top right bottom>
+      <DevTools store={store}
+      monitor={LogMonitor} />
+    </DebugPanel>
   </div>,
   root);
