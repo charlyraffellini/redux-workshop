@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { findDOMNode } from 'react';
 
 export default class AddTaskForm extends React.Component {
   _handleAdd() {
-    const node = React.findDOMNode(this.refs.input);
+    const node = findDOMNode(this.refs.input);
     const text = node.value.trim();
-    if (text) {
-      this.props.onNewTask(text);
-      node.value = "";
-    }
+    this.props.onAdd(text);
+    node.value = '';
   }
 
   render() {

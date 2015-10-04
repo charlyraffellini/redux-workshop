@@ -2,7 +2,7 @@ import React from 'react';
 import TaskList from './TaskList';
 import { Statuses } from "./constants";
 import AddTaskForm from "./AddTaskForm";
-import { createTask } from "./actions";
+import { createTask, removeTask } from "./actions";
 import { connect } from 'react-redux';
 
 class App extends React.Component {
@@ -12,7 +12,10 @@ class App extends React.Component {
     let taskLists = tasksByStatus.map( (item, index) =>
       <TaskList key={index}
         title={titleForStatus(item.status)}
-        tasks={item.tasks} />
+        tasks={item.tasks}
+        onRemoveTask={
+          (id) => dispatch(removeTask(id))
+        }/>
     );
 
     return <div className="kanbanBoard">
@@ -26,6 +29,7 @@ class App extends React.Component {
 }
 
 function select(state) {
+  state.tasks = state.tasks.map((task, index) => { return {...task, id: index} })
   let baseTaskMap = Object.keys(Statuses).map(status => ({status, tasks:[]}));
   return {tasksByStatus: state.tasks.reduce(groupTasks, baseTaskMap)};
 }
